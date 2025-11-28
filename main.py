@@ -1,3 +1,2 @@
-name="amadou"
+name = "amadou"
 print(f"Hello {name}")
-
