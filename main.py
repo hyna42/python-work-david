@@ -1,16 +1,27 @@
-import requests
 
 name = "amadou"
 print(f"Hello {name}")
+print("*-"*20)
+
+#Exercice 1 : Calculateur de tarif de cinéma
+#Objectif : Créez un programme qui calcule le prix d’une place de cinéma en fonction de l’âge du spectateur.
 
 
-nb = 42
-print("hyna -> 42 %x" % nb)  # entier en hexadécimal minuscule
-print(f"hyna -> 42 : {nb:x}")  # entier en hexadécimal avec les f-string
+def calculer_tarif(age):
+    """calcule le tarif d'une place de cinéma selon l'âge"""
+    if age <= 5:
+        return 0
+    elif age <= 17:
+        return 7
+    elif age <= 64:
+        return 12
+    else:
+        return 8
 
-price = 20.457
-print("Prix: %10.2f" % price)  # largeur minimal de 10 caractères, 2 décimal
-print(f"Prix: {price:8.2f}")  # meme résultat avec les f-string
-print("*" * 50)
-response = requests.get("https://www.pyton.org")
-print("Statut de la réponse :", response.status_code)
+print(f"3 ans : {calculer_tarif(3)}€")
+print(f"12 ans : {calculer_tarif(12)}€")
+print(f"63 ans : {calculer_tarif(63)}€")
+print(f"70 ans : {calculer_tarif(70)}€")
+    
+
+
