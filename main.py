@@ -3,33 +3,35 @@ print(f"Hello {name}")
 print("*" * 50)
 
 
-# Exercice 2 : Évaluateur de mot de passe
-# Objectif : créer un programme qui évalue la force d'un mot de passe
+# Exercice 3 : Distributeur de boissons avec match-case
+def distributeur_boisson(choix, monnaie):
+    match choix:
+        case "cafe":
+            prix= 1.5
+            nom="café"
 
+        case "the":
+            prix= 1.2
+            nom="thé"
 
-def evaluer_mot_de_passe(mot_de_passe):
-    len_mp = len(mot_de_passe)
-    match len_mp:
-        case n if n < 6:
-            return "Très faible"
-        case n if n <= 7:
-            return "Faible"
-        case n if n <= 11:
-            return "Moyen"
+        case "chocolat":
+            prix= 2
+            nom="chocolat"
+
+        case "eau":
+            prix= 0.8
+            nom="eau"
+
         case _:
-            return "Fort"
+            return "Boisson non disponible"
+        
+    #vérification de la monnie
+    if monnaie >= prix:
+        return f"Voici votre {nom} - Monnaie : {monnaie-prix:.2f}€"
+    else:
+        return f"Insuffisant ! Il manque {prix-monnaie:.2f}€"
 
-
-def est_securise(mot_de_passe):
-    return "Sécurisé" if len(mot_de_passe) >= 8 else "Non sécurisé"
-
-
-print(f"Sécurité du mot de passe 'test' = {evaluer_mot_de_passe("test")}")
-print(f"Sécurité du mot de passe '1azerty' = {evaluer_mot_de_passe("1azerty")}")
-print(f"Sécurité du mot de passe '1234azerty!' = {evaluer_mot_de_passe("1234azerty!")}")
-print(
-    f"Sécurité du mot de passe '123azertyoihidniohi' = {evaluer_mot_de_passe("123azertyoihidniohi")}"
-)
-
-print(f"'azerty' => {est_securise("azerty")}")
-print(f"'1234azerty' => {est_securise("1234azerty")}")
+#TESTS
+choix="javel"
+monnaie=4
+print(distributeur_boisson(choix,monnaie))
