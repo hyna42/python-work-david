@@ -9,7 +9,7 @@ print("*" * 50)
 # Exercice 1 : Table de multiplication
 # Objectif : afficher la table de multiplication d'un nombre donnée
 
-
+print("**** Exercice 1 ****".center(60))
 def table_multiplication(nombre, limite):
     """Afficher la table de multiplication d'un nombre jusqu'à une limite"""
     for i in range(1, limite + 1):
@@ -19,7 +19,7 @@ def table_multiplication(nombre, limite):
 # test
 table_multiplication(7, 10)
 
-
+print("**** Exercice 2 ****".center(60))
 # Exercice 2 : Jeu du "devine le nombre"
 def jeu_devine_nombre(nombre_secret, max_tentatives):
     """Deviner un nombre"""
@@ -44,7 +44,7 @@ def jeu_devine_nombre(nombre_secret, max_tentatives):
 
 jeu_devine_nombre(4, 3)
 
-
+print("**** Exercice 3 ****".center(60))
 # Exercice 3 : Configurateur de produit avec **kwargs et combinaison d’arguments
 def creer_produit(nom, prix, *categories, remise=0, **attributs):
     """
@@ -62,27 +62,42 @@ def creer_produit(nom, prix, *categories, remise=0, **attributs):
 
     """
 
+    #validation de la remise
+    if not 0 <= remise <= 100:
+        print(f"Remise invalide ({remise}%), mise à 0")
+        remise=0
+    #calcul du prix après remise
     prix_discount = prix * (1 - remise / 100)
-    attribut_val = ", ".join(f"{cle}:{valeur}" for cle, valeur in attributs.items())
-    categories_val = ",".join(categories)
 
-    print(
-        f"{"*"*15} {nom} {"*"*15}\n"
-        f"PRIX : {prix}\n"
-        f"CATEGORIES : {categories_val}\n"
-        f"REMISE : {remise}%\n"
-        f"PRIX APRES REMISE : {prix_discount:.2f}€\n"
-        f"ATTRIBUTS : {attribut_val}\n"
-        f"{"*"*(30+2+len(nom))}\n"
-    )
+    #affichage formaté :  produit et remise
+    print(f"\n  Poduit : {nom}")
+    print(f"   Prix Original : {prix:.2f}")
+
+    if remise > 0:
+        print(f"   Remise : {remise}%")
+        print(f"   Prix final : {prix_discount:.2f}€ (économie de {prix-prix_discount:.2f}€)")
+    else:
+        print(f"   Prix final : {prix_discount:.2f}€")
+
+    #affichage des catégories
+    if categories:
+        print(f"   Catégories : {','.join(categories)}")
+    else:
+        print(f"   Categories : Aucune")
+
+    #affichage des attributes supplémentaires
+    if attributs:
+        print(f"   Attributs : {','.join(f"{cle}:{valeur}" for cle, valeur in attributs.items())}")
+
+    #creation du disctionnaire
 
     return dict(
         nom=nom,
-        prix=prix,
-        categories=categories_val,
+        prix_original=prix,
         remise=remise,
-        prix_discount=prix_discount,
-        attributs=attribut_val,
+        prix_final=prix_discount,
+        categories=list(categories),
+        attributs=attributs,
     )
 #TEST : creer_produit()
 creer_produit(
@@ -102,12 +117,29 @@ def afficher_catalogue(*produits):
     Returns:
         catalogue formaté
     """
-    print(f"{"#"*15} ****CATALOGUE DE PRODUITS**** {"#"*15}")
-    for produit in produits:
-        for cle, valeur in produit.items():
-            print(f"{cle}:{valeur}")
-        print(f"{"~~"*30}")
-    print(f"{"#"*17} ****FIN DU CATALOGUE**** {"#"*17}")
+    print("=" * 60)
+    print("CATALOGUE DE PRODUITS".center(60))
+    print("=" * 60)
+    #validation du catalogue
+    if not produits:
+        print("Aucun produit dans le catalogue")
+        return
+    print(f"\nNombre de produits : {len(produits)}")
+    
+    for i, produit in enumerate(produits,1):
+        print(f"{i}. {produit['nom']} - {produit['prix_final']:.2f}€",end="")
+        if produit['remise'] > 0:
+            print(f" (remise de {produit['remise']}%)",end="")
+        if produit['categories']:
+            print(f"  Categories : {','.join(produit['categories'])}")
+    
+    # Calcul du prix total
+    prix_total = sum(p['prix_final'] for p in produits)
+    print(f"\nPrix total du catalogue {prix_total:.2f}")
+    
+    print("=" * 60)
+    print("FIN CATALOGUE DE PRODUITS".center(60))
+    print("=" * 60)
 
 
 #TEST afficher_catalogue()
