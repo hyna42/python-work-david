@@ -84,14 +84,35 @@ def creer_produit(nom, prix, *categories, remise=0, **attributs):
         prix_discount=prix_discount,
         attributs=attribut_val,
     )
-
-
-## iphone, 990€ , (mobile, neuf), remise=2, couleur=bleu, taille=sm
-cc = creer_produit("iphone", 990, "mobile", "neuf", remise=35, couleur="bleu", taille="sm")
-
-print("again cc ",cc)
-
+#TEST : creer_produit()
 creer_produit(
+    "iphone",                    # nom
+    990,                         # prix
+    "mobile", "neuf",            # *categories
+    remise=2,                    # remise
+    couleur="bleu",              # **attributs
+    taille="sm"                  # **attributs
+)
+
+
+def afficher_catalogue(*produits):
+    """
+    Args :
+        *produits: plusieurs produits (dict)
+    Returns:
+        catalogue formaté
+    """
+    print(f"{"#"*15} ****CATALOGUE DE PRODUITS**** {"#"*15}")
+    for produit in produits:
+        for cle, valeur in produit.items():
+            print(f"{cle}:{valeur}")
+        print(f"{"~~"*30}")
+    print(f"{"#"*17} ****FIN DU CATALOGUE**** {"#"*17}")
+
+
+#TEST afficher_catalogue()
+
+p1 = creer_produit(
     "laptop",
     1200,
     "ordinateur",
@@ -102,7 +123,7 @@ creer_produit(
     stockage="512GB SSD",
 )
 
-creer_produit(
+p2=creer_produit(
     "sneakers",
     80,
     "chaussures",
@@ -113,7 +134,7 @@ creer_produit(
     marque="Nike",
 )
 
-creer_produit(
+p3=creer_produit(
     "roman",
     18,
     "livre",
@@ -124,7 +145,7 @@ creer_produit(
     langue="français",
 )
 
-creer_produit(
+p4=creer_produit(
     "casque",
     150,
     "audio",
@@ -134,3 +155,5 @@ creer_produit(
     impedance="32ohm",
     poids="250g",
 )
+
+afficher_catalogue(p1,p2,p3,p4)
