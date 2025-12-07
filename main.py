@@ -1,5 +1,6 @@
 # .\Scripts\activate
 # deactivate
+from functools import wraps
 
 print("*" * 60)
 print("LES DECORATEUR".center(60))
@@ -29,7 +30,7 @@ def dire_bonjour():
 
 dire_bonjour()
 
-print("--" * 20,"Décorateur d'une fonction avec args/kwargs","--" * 20)
+print("--" * 20, "Décorateur d'une fonction avec args/kwargs", "--" * 20)
 
 # 2. décorateurs SIMPLE d'une fonction avec des args/kwargs
 
@@ -52,43 +53,84 @@ resultat = additionner(3, 5)  # affiche l'information et retourne 8
 print(resultat)
 
 
-print("--" * 20,"Décorateur avec paramètres","--" * 20)
+print("--" * 20, "Décorateur avec paramètres", "--" * 20)
 # 3. décorateurs avec paramètres : c'est une fonction qui retourne un autre décorateur
 # c'est une structure a 3 niveaux
 
+
 def decorateur_avec_params(param1, param2):
     """Fonction externe qui reçoit les paramètres du décorateur"""
+
     def decorateur_reel(fonction):
         """Le vrai décorateur qui reçoit la fonction"""
-        def wrapper(*args,**kwargs):
+
+        def wrapper(*args, **kwargs):
             """La fonction qui enveloppe la fonction décorée"""
             print(f"Paramètres du décorateur : {param1}, {param2}")
             return fonction(*args, **kwargs)
+
         return wrapper
+
     return decorateur_reel
 
 
-
-@decorateur_avec_params("Hello","World")
+@decorateur_avec_params("Hello", "World")
 def ma_fonction():
     print("Fonction exécutée")
+
+
 ma_fonction()
 
-print("--" * 20,"Application","--" * 20)
+print("--" * 20, "Application", "--" * 20)
 
 
 def repeat(nombre_fois):
     """Décorateur qui répète l'éxécution d'une fonction"""
+
     def mon_decorateur(fonction):
-        def wrapper(*args,**kwargs):
+        @wraps(fonction)  # toujours utiliser
+        def wrapper(*args, **kwargs):
+            print("Nom du Wrapper : ", wrapper.__name__)
             for i in range(nombre_fois):
-                print(f"Ma Wokko {i+1} yonn : ",end="")
-                fonction(*args,**kwargs)
+                print(f"Ma Wokko {i+1} yonn : ", end="")
+                fonction(*args, **kwargs)
+
         return wrapper
+
     return mon_decorateur
+
 
 @repeat(4)
 def sant_baye():
+    """Documentation de ma fonction"""
     print("Dieuredieufé Baye Niass")
 
+
 sant_baye()
+print("Nom de ma fonction : ", sant_baye.__name__)
+print("Docs de ma fonction : ", sant_baye.__doc__)
+
+## NB : toujours utiliser les @wraps pour préserver les métadonnées de la fonction oroginale
+
+
+# EXERCICE 1 : decorateur qui mesure le temps d'exécution
+print("--" * 20, "Exercice 1", "--" * 20)
+
+def chronometre():
+    """Décorateur qui mesure le temps d'exécution d'une fonction"""
+    return ''
+
+def calcul_lent(limit):
+    """Calculer la somme des 1_000_000 premiers nombre"""
+    resultat = 0
+    for i in range(1,limit+1):
+        resultat += i;
+    print("TEST:::",resultat)
+
+
+def tri_list(limit):
+    """Trier une liste de 10_000 nombres aléatoires"""
+
+
+calcul_lent(500)
+
