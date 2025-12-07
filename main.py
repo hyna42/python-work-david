@@ -54,6 +54,7 @@ print(resultat)
 
 print("--" * 20,"Décorateur avec paramètres","--" * 20)
 # 3. décorateurs avec paramètres : c'est une fonction qui retourne un autre décorateur
+# c'est une structure a 3 niveaux
 
 def decorateur_avec_params(param1, param2):
     """Fonction externe qui reçoit les paramètres du décorateur"""
@@ -72,3 +73,22 @@ def decorateur_avec_params(param1, param2):
 def ma_fonction():
     print("Fonction exécutée")
 ma_fonction()
+
+print("--" * 20,"Application","--" * 20)
+
+
+def repeat(nombre_fois):
+    """Décorateur qui répète l'éxécution d'une fonction"""
+    def mon_decorateur(fonction):
+        def wrapper(*args,**kwargs):
+            for i in range(nombre_fois):
+                print(f"Ma Wokko {i+1} yonn : ",end="")
+                fonction(*args,**kwargs)
+        return wrapper
+    return mon_decorateur
+
+@repeat(4)
+def sant_baye():
+    print("Dieuredieufé Baye Niass")
+
+sant_baye()
