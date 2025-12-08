@@ -127,7 +127,7 @@ def chronometre(fonction):
     def wrapper(*args, **kwargs):
         print(f"Démarrage de [{wrapper.__name__}] ...")
         temps_debut = time.time()
-        resultat = fonction(*args,**kwargs)
+        resultat = fonction(*args, **kwargs)
         temps_fin = time.time()
         duree = temps_fin - temps_debut
         print(f"[{wrapper.__name__}] terminée en {duree:.2f} secondes\n{"~~"*30}")
@@ -136,14 +136,16 @@ def chronometre(fonction):
 
     return wrapper
 
-#Test1 : fonction simple
+
+# Test1 : fonction simple
 @chronometre
 def calcul_lent():
     """Calculer la somme des 1_000_000 premiers nombre"""
     total = sum(range(1000000))
     return total
-    
-#Test2 : fonction avec paramètres
+
+
+# Test2 : fonction avec paramètres
 @chronometre
 def tri_liste(liste):
     """Trier une liste de 10_000 nombres aléatoires"""
@@ -154,3 +156,7 @@ nombres = [random.randint(1, 10_000) for _ in range(10_000)]
 
 calcul_lent()
 tri_liste(nombres)
+
+
+# EXERCICE 2 : Décorateur de validation avec paramètres
+print("--" * 20, "Exercice 2", "--" * 20)
