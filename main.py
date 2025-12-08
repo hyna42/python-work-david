@@ -1,6 +1,9 @@
 # .\Scripts\activate
 # deactivate
 from functools import wraps
+import random
+import time
+
 
 print("*" * 60)
 print("LES DECORATEUR".center(60))
@@ -116,21 +119,38 @@ print("Docs de ma fonction : ", sant_baye.__doc__)
 # EXERCICE 1 : decorateur qui mesure le temps d'exécution
 print("--" * 20, "Exercice 1", "--" * 20)
 
-def chronometre():
+
+def chronometre(fonction):
     """Décorateur qui mesure le temps d'exécution d'une fonction"""
-    return ''
 
-def calcul_lent(limit):
+    @wraps(fonction)
+    def wrapper(*args, **kwargs):
+        print(f"Démarrage de [{wrapper.__name__}] ...")
+        temps_debut = time.time()
+        resultat = fonction(*args,**kwargs)
+        temps_fin = time.time()
+        duree = temps_fin - temps_debut
+        print(f"[{wrapper.__name__}] terminée en {duree:.2f} secondes\n{"~~"*30}")
+
+        return resultat
+
+    return wrapper
+
+#Test1 : fonction simple
+@chronometre
+def calcul_lent():
     """Calculer la somme des 1_000_000 premiers nombre"""
-    resultat = 0
-    for i in range(1,limit+1):
-        resultat += i;
-    print("TEST:::",resultat)
-
-
-def tri_list(limit):
+    total = sum(range(1000000))
+    return total
+    
+#Test2 : fonction avec paramètres
+@chronometre
+def tri_liste(liste):
     """Trier une liste de 10_000 nombres aléatoires"""
+    return sorted(liste)
 
 
-calcul_lent(500)
+nombres = [random.randint(1, 10_000) for _ in range(10_000)]
 
+calcul_lent()
+tri_liste(nombres)
