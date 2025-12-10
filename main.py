@@ -171,10 +171,6 @@ def valider_types(*types_attendues):
     def decorateur(fonction):
         @wraps(fonction)
         def wrapper(*args):
-            # validation des arguments positionnels
-            # Validation des arguments positionnels
-            if len(args) > len(types_attendues):
-                raise TypeError() 
             for i, (arg, type_attendu) in enumerate(zip(args, types_attendues)):
                 if not isinstance(arg, type_attendu):
                     raise TypeError(
@@ -234,6 +230,6 @@ except TypeError as e:
 
 try:
     print(inscription_utilisateur("Alice", 28, "alice@example.com", True))
-    print(inscription_utilisateur("Bob", 35, "bob@example.com", False))
+    print(inscription_utilisateur("Bob", 35, "bob@example.com","False"))
 except TypeError as e:
     print("Erreur inscription_utilisateur :", e)
