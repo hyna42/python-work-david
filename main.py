@@ -172,6 +172,9 @@ def valider_types(*types_attendues):
         @wraps(fonction)
         def wrapper(*args):
             # validation des arguments positionnels
+            # Validation des arguments positionnels
+            if len(args) > len(types_attendues):
+                raise TypeError() 
             for i, (arg, type_attendu) in enumerate(zip(args, types_attendues)):
                 if not isinstance(arg, type_attendu):
                     raise TypeError(
@@ -203,6 +206,15 @@ def division(a, b):
     print("resultat = ", a / b)
 
 
+# TEST3
+# Test 3 : Fonction avec plusieurs paramètres
+@valider_types(str, int, str, bool)
+def inscription_utilisateur(nom, age, email, newsletter):
+    """Inscrit un utilisateur"""
+    statut = "avec" if newsletter else "sans"
+    return f" {nom}, {age} ans ({email}) inscrit {statut} newsletter"
+
+
 # Chaque appel est dans un bloc try-except séparé
 try:
     creer_produit("Livre", 5, 19.99)  # OK
@@ -210,11 +222,18 @@ except TypeError as e:
     print("Erreur creer_produit 1:", e)
 
 try:
-    creer_produit("Livre", "cinq", 19.99)  # Échoue, mais ne bloque pas la suite
+    creer_produit("Livre", "cinq", 19.99)  # KO
 except TypeError as e:
     print("Erreur creer_produit 2:", e)
 
 try:
-    division("4", 5)  # S'exécute même si le précédent a échoué
+    division("4", 5)  # KO
 except TypeError as e:
     print("Erreur division:", e)
+
+
+try:
+    print(inscription_utilisateur("Alice", 28, "alice@example.com", True))
+    print(inscription_utilisateur("Bob", 35, "bob@example.com", False))
+except TypeError as e:
+    print("Erreur inscription_utilisateur :", e)
