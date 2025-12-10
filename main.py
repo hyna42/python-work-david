@@ -8,12 +8,12 @@ import time
 print("*" * 60)
 print("LES DECORATEUR".center(60))
 print("*" * 60)
+
+
 ############################################################################
 # DECORATEURS
 ############################################################################
 # 1. décorateurs simple
-
-
 def mon_decorateur(fonction):
     print(f"Nom de la fonction décorée : {fonction.__name__}")
 
@@ -35,9 +35,8 @@ dire_bonjour()
 
 print("--" * 20, "Décorateur d'une fonction avec args/kwargs", "--" * 20)
 
+
 # 2. décorateurs SIMPLE d'une fonction avec des args/kwargs
-
-
 def decorator_avec_args(func):
     def wrapper(*args, **kwargs):
         print(f"Appel de {func.__name__} avec args : {args}")
@@ -73,6 +72,8 @@ def decorateur_avec_params(param1, param2):
             return fonction(*args, **kwargs)
 
         return wrapper
+
+    # LesApprentisD'Aymard
 
     return decorateur_reel
 
@@ -160,3 +161,60 @@ tri_liste(nombres)
 
 # EXERCICE 2 : Décorateur de validation avec paramètres
 print("--" * 20, "Exercice 2", "--" * 20)
+
+
+def valider_types(*types_attendues):
+    """
+    Décorateur qui valide les types des arguments d'un fonction
+    """
+
+    def decorateur(fonction):
+        @wraps(fonction)
+        def wrapper(*args):
+            # validation des arguments positionnels
+            for i, (arg, type_attendu) in enumerate(zip(args, types_attendues)):
+                if not isinstance(arg, type_attendu):
+                    raise TypeError(
+                        f"Argument {i+1} de {fonction.__name__} : "
+                        f"attendu {type_attendu.__name__}, "
+                        f"reçu {type(arg).__name__} (valeur: {arg})"
+                    )
+            return fonction(*args)
+
+        return wrapper
+
+    return decorateur
+
+
+# TEST1
+@valider_types(str, int, int)
+def creer_produit(nom, prix, quantité):
+    """Fonction qui affiche les détails d'un produit : titre, quantité, prix/unitaire"""
+
+    print("*" * 30)
+    print("PRODUIT".center(30))
+    print(f"Nom: {nom} - Prix: {prix}€ - Quantité: {quantité} unité(s)")
+    print("*" * 30)
+
+
+# TEST2
+@valider_types(int, int)
+def division(a, b):
+    print("resultat = ", a / b)
+
+
+# Chaque appel est dans un bloc try-except séparé
+try:
+    creer_produit("Livre", 5, 19.99)  # OK
+except TypeError as e:
+    print("Erreur creer_produit 1:", e)
+
+try:
+    creer_produit("Livre", "cinq", 19.99)  # Échoue, mais ne bloque pas la suite
+except TypeError as e:
+    print("Erreur creer_produit 2:", e)
+
+try:
+    division("4", 5)  # S'exécute même si le précédent a échoué
+except TypeError as e:
+    print("Erreur division:", e)
